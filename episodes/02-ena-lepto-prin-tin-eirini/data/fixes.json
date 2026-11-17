@@ -1,0 +1,11 @@
+{
+ "treb3": {
+  "file": "fix_treb3.mp3",
+  "words": "fix_treb3_words.json"
+ },
+ "mons4": {
+  "file": "fix_mons4.mp3",
+  "words": "fix_mons4_words.json",
+  "gain_db": -3.0
+ }
+}

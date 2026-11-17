@@ -1,0 +1,11 @@
+# media and generated data never go in the repo
+*.mp4
+*.mp3
+*.wav
+*.png
+*.jpg
+*.npy
+*.f32
+*.tar
+__pycache__/
+chunks/
