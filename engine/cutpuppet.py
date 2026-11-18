@@ -73,14 +73,30 @@ class Walker:
     def __init__(self, alpha, height_px, x0, y_feet, speed, cycle=0.9, phase=0.0, hold_fps=10, sway=1.2, flip=False):
         if flip: alpha = alpha[:, ::-1].copy()
         self.poses, self.hy, self.cx = make_poses(alpha)
+        self.parts = None
         self.h, self.w = alpha.shape
         rows = np.where((alpha > 0.5).any(1))[0]
         self.foot = rows[-1]; self.top = rows[0]
         self.scale = height_px / max(1, self.foot - self.top)
         self.x0, self.yf, self.speed, self.cycle, self.phase = x0, y_feet, speed, cycle, phase
         self.hold_fps, self.sway = hold_fps, sway
+    def split(self, alpha, x_frac, cycle2, phase2):
+        """one card holding two figures (e.g. adult and child holding hands): rig each
+        figure's legs separately, keep the joined upper card intact."""
+        l, r = split_vertical(alpha, x_frac)
+        self.parts = [(make_poses(l)[0], 1.0, 0.0), (make_poses(r)[0], cycle2, phase2)]
+        rows = np.where((r > 0.5).any(1))[0]
+        cols = np.where((alpha[int(rows[-1] * 0.9):] > 0.5).any(0))[0]
+        self.cx = (cols[0] + cols[-1]) / 2
+        return self
     def pose_at(self, t):
         tq = math.floor(t * self.hold_fps) / self.hold_fps          # held frames
+        if self.parts:
+            card = None
+            for poses, cm, ph in self.parts:
+                k = int(((tq / (self.cycle * cm) + self.phase + ph) % 1.0) * 4) % 4
+                card = poses[k] if card is None else np.maximum(card, poses[k])
+            return card, tq
         k = int(((tq / self.cycle + self.phase) % 1.0) * 4) % 4
         return self.poses[k], tq
     def render_into(self, canvas, t, W, H, extra_rot=0.0):

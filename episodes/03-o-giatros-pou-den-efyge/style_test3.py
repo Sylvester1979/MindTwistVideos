@@ -15,8 +15,9 @@ def one(path, ground=None):
     return max(f, key=lambda a: (a > 0.5).sum())
 
 korczak = one(f'{IMG}/K01_korczak.png', ground=0.90)
+pair = one(f'{IMG}/C03_korczak.png', ground=0.93)
 girl = one(f'{IMG}/K02_girl_hand.png')
-kids = extract_figures(f'{IMG}/K03_kids4a.png') + extract_figures(f'{IMG}/K04_kids4b.png')
+kids = [k for k in extract_figures(f'{IMG}/K03_kids4a.png') + extract_figures(f'{IMG}/K04_kids4b.png') if k.shape[1] / k.shape[0] < 0.8]
 print('figures', len(kids))
 
 # ---- pose sheet: check the rig on every figure
@@ -36,7 +37,7 @@ os.makedirs(f'{ROOT}/test', exist_ok=True)
 cv2.imwrite(f'{ROOT}/test/pose_sheet.jpg', cv2.resize(np.hstack(cols), None, fx=0.5, fy=0.5), [cv2.IMWRITE_JPEG_QUALITY, 80])
 
 # ---- scenery strips (cut card), scrolled for a tracking shot
-sky = cutout(f'{IMG}/S04_street.png', lo=30, hi=200, size=(W, H))[: int(H * 0.36)]
+sky = cutout(f'{IMG}/S04_street.png', lo=12, hi=70, size=(W, H))[: int(H * 0.36)]
 house = cutout(f'{IMG}/C04_house.png')
 rng = np.random.default_rng(4)
 def ground_strip(width):
@@ -53,12 +54,11 @@ GROUND = ground_strip(W * 4)
 
 GY = H * 0.84
 SPEED = 95.0                                    # px/s the procession walks (camera follows)
-lead = Walker(korczak, H * 0.47, W * 0.62, GY + 2, speed=0, cycle=1.2, hold_fps=8, sway=0.5)
-hold = Walker(girl, H * 0.235, W * 0.44, GY, speed=0, cycle=0.82, phase=0.3, hold_fps=8, sway=0.9)
+lead = Walker(pair, H * 0.50, W * 0.52, GY + 2, speed=0, cycle=1.2, hold_fps=8, sway=0.4).split(pair, 0.37, 0.7, 0.35)
 row = []
 for i, k in enumerate(kids):
     hpx = H * (0.20 + 0.045 * ((i * 3) % 4) / 3)
-    row.append(Walker(k, hpx, W * 0.20 - i * 150, GY + (i % 2) * 5, speed=0, cycle=0.78 + 0.05 * (i % 3),
+    row.append(Walker(k, hpx, W * 0.05 - i * 150, GY + (i % 2) * 5, speed=0, cycle=0.78 + 0.05 * (i % 3),
                       phase=0.29 * i, hold_fps=8, sway=1.0))
 far = [Walker(k, H * 0.12, W * 0.9 - i * 110, GY - 150, speed=0, cycle=0.7, phase=0.41 * i, hold_fps=8)
        for i, k in enumerate(kids[:7])]
@@ -88,7 +88,7 @@ def frame(t, fi, warmth=1.0):
     img = cast(img, cf, blur=2.6, density=0.55)
     cm = np.zeros((H, W), np.float32)
     for w in row: w.render_into(cm, t, W, H)
-    hold.render_into(cm, t, W, H); lead.render_into(cm, t, W, H)
+    lead.render_into(cm, t, W, H)
     np.maximum(cm, scroll(GROUND, cam), out=cm)
     img = cast(img, cm, blur=0.6, density=0.97)
     img = film.apply(img, fi, t, strength=0.5, weave=True, flicker=0.4)
