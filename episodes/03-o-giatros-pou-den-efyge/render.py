@@ -47,7 +47,7 @@ MOVES = {
     'H01_flowers': dict(c=((0.50, 0.62, 1.40), (0.50, 0.50, 1.04)), par=(0, 0, -50), motes=0.4),
 }
 # hybrid AI regions: plate-fraction box (l, t, r, b); clip in $ROOT/ai/<k>.mp4
-AI = {'A02_window': (0.20, 0.33, 0.80, 0.70), 'H01_flowers': (0.18, 0.45, 0.82, 0.80)}
+AI = {'A02_window': (0.18, 0.30, 0.82, 0.72), 'H01_flowers': (0.18, 0.45, 0.82, 0.80)}
 # text cards: shot -> (lines, kind, size, y, t_in, t_out) times relative to shot start/end
 CARDS = {
     'A01_street': (['4 Αυγούστου 1942', 'Βαρσοβία'], 'serif', 70, 0.17, 0.4, -0.5),
