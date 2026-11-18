@@ -37,7 +37,9 @@ os.makedirs(f'{ROOT}/test', exist_ok=True)
 cv2.imwrite(f'{ROOT}/test/pose_sheet.jpg', cv2.resize(np.hstack(cols), None, fx=0.5, fy=0.5), [cv2.IMWRITE_JPEG_QUALITY, 80])
 
 # ---- scenery strips (cut card), scrolled for a tracking shot
-sky = cutout(f'{IMG}/S04_street.png', lo=12, hi=70, size=(W, H))[: int(H * 0.36)]
+sky = cutout(f'{IMG}/S04_street.png', lo=5, hi=38, size=(W, H))[: int(H * 0.36)]
+sky[: int(H * 0.08)] = 0                                    # the box-room ceiling of the source image
+sky *= np.clip((H * 0.345 - np.arange(sky.shape[0])) / (H * 0.03), 0, 1)[:, None]
 house = cutout(f'{IMG}/C04_house.png')
 rng = np.random.default_rng(4)
 def ground_strip(width):
@@ -58,7 +60,7 @@ lead = Walker(pair, H * 0.50, W * 0.52, GY + 2, speed=0, cycle=1.2, hold_fps=8, 
 row = []
 for i, k in enumerate(kids):
     hpx = H * (0.20 + 0.045 * ((i * 3) % 4) / 3)
-    row.append(Walker(k, hpx, W * 0.05 - i * 150, GY + (i % 2) * 5, speed=0, cycle=0.78 + 0.05 * (i % 3),
+    row.append(Walker(k, hpx, W * 0.10 - i * 128, GY + (i % 2) * 5, speed=0, cycle=0.78 + 0.05 * (i % 3),
                       phase=0.29 * i, hold_fps=8, sway=1.0))
 far = [Walker(k, H * 0.12, W * 0.9 - i * 110, GY - 150, speed=0, cycle=0.7, phase=0.41 * i, hold_fps=8)
        for i, k in enumerate(kids[:7])]
