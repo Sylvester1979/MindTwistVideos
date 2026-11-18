@@ -51,6 +51,26 @@ def chunks(sent, maxw=6):
         n = -(-len(w) // maxw)
         size = -(-len(w) // n)
         out += [' '.join(w[i:i + size]) for i in range(0, len(w), size)]
+    # never end a chunk on an article / preposition: move it to the next chunk
+    WEAK = {'τα', 'το', 'η', 'ο', 'οι', 'την', 'τον', 'της', 'των', 'από', 'σε', 'για', 'με',
+            'και', 'να', 'ένα', 'ένας', 'μια', 'στο', 'στην', 'στα', 'προς'}
+    for i in range(len(out) - 1):
+        w = out[i].split()
+        while len(w) > 1 and w[-1].lower() in WEAK:
+            out[i + 1] = w.pop() + ' ' + out[i + 1]
+        out[i] = ' '.join(w)
+    # re-split chunks that grew too long, at a boundary that does not end on a weak word
+    res = []
+    for c in out:
+        w = c.split()
+        if len(w) > maxw + 1:
+            cut = len(w) // 2
+            while cut > 1 and w[cut - 1].lower() in WEAK:
+                cut -= 1
+            res += [' '.join(w[:cut]), ' '.join(w[cut:])]
+        else:
+            res.append(c)
+    out = res
     # merge very short tails into the previous chunk
     merged = []
     for c in out:

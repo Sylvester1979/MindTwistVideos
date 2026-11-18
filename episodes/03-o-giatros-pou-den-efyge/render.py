@@ -138,9 +138,27 @@ def card(img, k, s, t):
     t_out = s['t1'] + to if to < 0 else s['t0'] + to
     a = clamp01((t - s['t0'] - ti) / 0.6) * clamp01((t_out - t) / 0.6)
     if a <= 0: return img
-    al = text_layer(lines, kind, size, 560, 1.25)
-    img = band(img, int(H * y - al.shape[0] / 2 - 10), int(H * y + al.shape[0] / 2 + 10), 0.35 * a, 80)
-    return paste_alpha(img, al, W / 2, H * y, CREAMC, a, shadow=0.9, rough=False)
+    return paper_text(img, text_layer(lines, kind, size, 560, 1.25), int(H * y), a, pad=(50, 26))
+
+
+def paper_text(img, al, cy, a, pad=(40, 40), op=0.9):
+    """ink text on a torn cream paper strip (paper-craft title card)."""
+    px, py = pad
+    h, w = al.shape[0] + 2 * py, al.shape[1] + 2 * px
+    x0, y0 = W // 2 - w // 2, cy - h // 2
+    n = _ink_noise(5)
+    edge = np.ones((h, w), np.float32)
+    rough = (n[:h, :w] - 0.5) * 18
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    d = np.minimum(np.minimum(xx, w - 1 - xx), np.minimum(yy, h - 1 - yy)) + rough
+    edge = np.clip(d / 3.0, 0, 1)
+    sub = img[y0:y0 + h, x0:x0 + w]
+    sh = cv2.GaussianBlur(edge, (0, 0), 7)[..., None]
+    sub = sub * (1 - 0.35 * a * np.roll(np.roll(sh, 6, 0), 4, 1))
+    paper = CREAMC * (0.93 + 0.07 * n[:h, :w])[..., None]
+    m = (edge * op * a)[..., None]
+    img[y0:y0 + h, x0:x0 + w] = sub * (1 - m) + paper * m
+    return paste_alpha(img, al, W / 2, cy, INKC, a, rough=True)
 
 
 def quote(img, lines, s, t, y, ti, to):
@@ -148,14 +166,7 @@ def quote(img, lines, s, t, y, ti, to):
     t_out = s['t1'] + to if to < 0 else s['t0'] + to
     a = clamp01((t - t_in) / 0.8) * clamp01((t_out - t) / 0.8)
     if a <= 0: return img
-    al = text_layer(lines, 'serif', 72, 520, 1.22)
-    pad = 40
-    h, w = al.shape[0] + 2 * pad, al.shape[1] + 2 * pad
-    cy = int(H * y); x0, y0 = W // 2 - w // 2, cy - h // 2
-    sub = img[y0:y0 + h, x0:x0 + w]
-    paper = CREAMC * (0.92 + 0.08 * _ink_noise(5)[:h, :w])[..., None]
-    img[y0:y0 + h, x0:x0 + w] = sub * (1 - 0.88 * a) + paper * 0.88 * a
-    return paste_alpha(img, al, W / 2, cy, INKC, a, rough=True)
+    return paper_text(img, text_layer(lines, 'serif', 72, 520, 1.22), int(H * y), a, pad=(44, 40), op=0.92)
 
 
 # ---------------------------------------------------------------- ~4.000 children
@@ -166,7 +177,7 @@ def count_field(n=4000, seed=3):
     pts = [((i + 0.5 + (j % 2) * 0.5) * W / cols, (j + 0.5) * H / rows) for j in range(rows) for i in range(cols)]
     pts = np.array(pts, np.float32)[:n]
     pts += r.normal(0, 2.0, pts.shape).astype(np.float32)
-    order = np.argsort(np.hypot(pts[:, 0] - W / 2, pts[:, 1] - H * 0.55) + r.random(len(pts)) * 160)
+    order = r.permutation(len(pts))
     return pts[order], 0.75 + r.random(len(pts)) * 0.4
 
 
@@ -220,8 +231,8 @@ def subtitles(img, t):
             continue   # the quote card already shows these words
         if s['t0'] - 0.05 <= t <= s['t1'] + 0.1:
             a = clamp01((t - s['t0'] + 0.05) / 0.1) * clamp01((s['t1'] + 0.1 - t) / 0.1)
-            img = band(img, SUBY - 48, SUBY + 48, 0.42 * a, 70)
-            img = paste_alpha(img, sub_alpha(s['text']), W / 2, SUBY, (236, 242, 246), a, shadow=0.9, rough=False)
+            img = band(img, SUBY - 40, SUBY + 40, 0.28 * a, 60)
+            img = paste_alpha(img, sub_alpha(s['text']), W / 2, SUBY, (236, 242, 246), a, shadow=1.0, rough=False)
     return img
 
 
