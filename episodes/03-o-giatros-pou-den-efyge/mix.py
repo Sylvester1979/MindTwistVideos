@@ -97,7 +97,16 @@ bed(f('breeze'), 0.0, S1('A03_guard'), db(-24), 1.2, 1.0)                       
 place(f('water'), S0('A02_window') + 0.5, db(-15), 0.3, 1.0, dur=S1('A02_window') - S0('A02_window'))
 place(f('pen'), S0('A04_diary') + 1.2, db(-17), 0.3, 1.2, dur=7.0)                   # «Εκείνο το βράδυ γράφει»
 bed(f('hall'), S0('B02_orphans'), S1('B02_orphans'), db(-23), 0.8, 1.0)             # dining hall
-place(f('whistle'), S0('C04_rails') + 0.8, db(-16), 0.5, 1.5, dur=S1('C04_rails') - S0('C04_rails') + 1.0)
+# whistle: its audible onset lands right after the first «Τρεμπλίνκα» (end of that subtitle chunk)
+def onset(path, frac=0.35):
+    a = load(path)[:, 0]
+    e = np.convolve(a ** 2, np.ones(SR // 50) / (SR // 50), 'same')
+    return int(np.argmax(e > frac * e.max())) / SR
+tTr = next(x['t1'] for x in TL['subs'] if 'Τρεμπλίνκα' in x['text']) - 0.15
+if os.path.exists(f('whistle')):
+    o = onset(f('whistle'))
+    print('whistle onset in file', round(o, 2), 'placed at', round(tTr + 0.08, 2))
+    place(f('whistle'), tTr + 0.08 - o, db(-14), 0.05, 1.5, dur=o + (S1('C04_rails') - tTr) + 1.0)
 bed(f('steps'), S0('E01_march') + 0.2, S1('E02_column'), db(-19), 1.0, 1.5)        # the march
 bed(f('breeze'), S0('H01_flowers'), T + 0.5, db(-22), 1.5, 2.0)                     # the empty window
 
