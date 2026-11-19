@@ -52,10 +52,25 @@ for a, b, n in sm.get_matching_blocks():
 matched = len(m) / len(sn)
 print(f'matched {len(m)}/{len(sn)} script words ({matched:.0%})')
 
+# whisper word edges drift into silences: snap them to the silence borders of the actual audio
+AUDIO = os.environ.get('VOICE', f'{ROOT}/audio/voice_edit.wav')
+log = subprocess.run(['ffmpeg', '-i', AUDIO, '-af', 'silencedetect=n=-42dB:d=0.18', '-f', 'null', '-'],
+                     capture_output=True, text=True).stderr
+SIL = list(zip([float(v) for v in re.findall(r'silence_start: ([0-9.]+)', log)],
+               [float(v) for v in re.findall(r'silence_end: ([0-9.]+)', log)]))
+
+
+def snap(s, e):
+    for a, b in SIL:
+        if a - 0.02 <= s < b: s = b
+        if a < e <= b + 0.02: e = a
+    return s, max(e, s + 0.1)
+
+
 # time for every script word: matched -> whisper time; unmatched -> interpolate
 times = [None] * len(sn)
 for i, j in m.items():
-    times[i] = (ww[j]['s'], ww[j]['e'])
+    times[i] = snap(ww[j]['s'], ww[j]['e'])
 known = [i for i in range(len(sn)) if times[i]]
 for i in range(len(sn)):
     if times[i] is None:
