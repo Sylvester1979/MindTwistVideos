@@ -96,6 +96,8 @@ def shot_frame(s, t, fi):
     k = s['k']
     if k == 'G01_count':
         return count_frame(s, t, fi)
+    if k == 'Z01_endcard':
+        return end_frame(s, t, fi)
     mv = {**D, **MOVES.get(k, {})}
     (a0, b0, z0), (a1, b1, z1) = mv.get('c', ((0.5, 0.5, 1.05), (0.5, 0.5, 1.25)))
     dur = s['t1'] - s['t0'] + XF
@@ -212,6 +214,24 @@ def count_frame(s, t, fi):
     if a2 > 0:
         al2 = text_layer(['παιδιά από τα ορφανοτροφεία', 'της Βαρσοβίας'], 'serif', 56, 500, 1.2)
         out = paste_alpha(out, al2, W / 2, H * 0.22 + 135, PAPER, a2, shadow=0.8, rough=True)
+    return out
+
+
+# ---------------------------------------------------------------- closing card (where the diary is today)
+ENDCARD = [  # (lines, start, end) seconds from the card's start
+    (['Το ημερολόγιο το έκρυψαν φίλοι του,', 'χτισμένο στη σοφίτα', 'ενός ορφανοτροφείου της Βαρσοβίας.'], 0.6, 5.0),
+    (['Βρέθηκε μετά τον πόλεμο', 'και εκδόθηκε το 1958.', 'Σήμερα οι σελίδες του φυλάσσονται', 'σε μουσεία της Βαρσοβίας και του Ισραήλ.'], 5.3, 10.3),
+]
+
+
+def end_frame(s, t, fi):
+    out = count_bg().copy()
+    r = t - s['t0']
+    for lines, a, b in ENDCARD:
+        al_ = clamp01((r - a) / 0.7) * clamp01((b - r) / 0.7)
+        if al_ > 0:
+            al = text_layer(lines, 'serif', 56, 520, 1.3)
+            out = paste_alpha(out, al, W / 2, H * 0.45, PAPER * 1.02, al_, shadow=0.8, rough=True)
     return out
 
 

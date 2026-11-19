@@ -15,7 +15,8 @@ SEG, sentences, chunks = ns['SEG'], ns['sentences'], ns['chunks']
 
 VOFF = 0.6          # narration starts here in the video
 LEAD = 0.35         # cut to a shot this long before its first word
-TAIL = 3.2          # hold after the last word
+HOLD = 2.6          # hold on the last image after the last word
+END = 10.5          # closing card about the diary (text only)
 DISPLAY = [         # subtitle display: digits where episode 2 used digits
     ('χίλια εννιακόσια σαράντα δύο', '1942'),
     ('Σχεδόν διακόσια παιδιά', 'Σχεδόν 200 παιδιά'),
@@ -106,8 +107,10 @@ for si, (k, _, _) in enumerate(SEG):
     shots.append({'k': k, 't0': round(t0, 2)})
 for a, b in zip(shots, shots[1:]):
     a['t1'] = b['t0']
-T = round(voice_end + VOFF + TAIL, 2)
-shots[-1]['t1'] = T
+tH = round(voice_end + VOFF + HOLD, 2)
+shots[-1]['t1'] = tH
+shots.append({'k': 'Z01_endcard', 't0': tH, 't1': round(tH + END, 2)})
+T = shots[-1]['t1']
 json.dump({'T': T, 'voff': VOFF, 'shots': shots, 'subs': subs, 'estimated': False},
           open(f'{ROOT}/timeline.json', 'w'), ensure_ascii=False, indent=1)
 print('T =', T)

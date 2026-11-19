@@ -64,20 +64,18 @@ vo = np.zeros(N, np.float32)
 i0 = int(VOFF * SR); n = min(N - i0, len(voice)); vo[i0:i0 + n] = voice[:n]
 out += vo[:, None]
 
-# ---------------- music: head from 0, crossfade into the natural outro so it ends with the video
+# ---------------- music: one continuous take, no internal edit.
+# Start inside the track so that its own natural decay ends with the video.
 mus = load(f'{ROOT}/audio/music.wav')
-L = len(mus) / SR
-OUT_SRC = 147.0                       # sparse outro starts here in the track
-tB = T + 0.5 - (L - 1.5 - OUT_SRC)    # outro placed so its decay lands at the end
-XF = 3.0
+e = np.sqrt(np.convolve(mus[:, 0] ** 2, np.ones(SR // 10) / (SR // 10), 'same'))
+decay_end = (np.where(e > db(-45))[0][-1]) / SR          # last audible moment of the track
+src0 = decay_end - (T + 0.3)                               # track position at video t=0
+print('music: track', round(len(mus) / SR, 1), 's, decay end', round(decay_end, 1), 's, start at', round(src0, 1), 's')
 m = np.zeros((N, 2), np.float32)
-a_end = int((tB + XF) * SR)
-m[:min(N, a_end)] = mus[:min(N, a_end)]
-w = np.clip((np.arange(N) / SR - tB) / XF, 0, 1)[:, None].astype(np.float32)
-m *= (1 - w)
-b = mus[int(OUT_SRC * SR):]
-j0 = int(tB * SR); nb = min(N - j0, len(b))
-m[j0:j0 + nb] += b[:nb] * w[j0:j0 + nb]
+if src0 >= 0:
+    seg = mus[int(src0 * SR):]; m[:min(N, len(seg))] = seg[:N]
+else:
+    d = int(-src0 * SR); m[d:d + min(N - d, len(mus))] = mus[:N - d]
 # ducking under the voice
 va = np.convolve(np.abs(vo), np.ones(SR // 20) / (SR // 20), 'same')
 act = (va > 0.01).astype(np.float32)
@@ -85,9 +83,9 @@ k = int(0.35 * SR); act = np.convolve(act, np.ones(k) / k, 'same')
 duck = 1 - 0.45 * np.clip(act * 1.6, 0, 1)
 tN = S1('F03_empty') - 0.3             # after «Κανείς τους δεν γύρισε.»
 tE = S0('H01_flowers')
-auto = env([(0, 0.0), (0.05, 0.0), (1.5, 1.0),
+auto = env([(0, 0.0), (0.05, 0.0), (2.5, 1.0),
             (tN - 2.2, 1.0), (tN - 1.4, db(-12)), (tN + 0.6, db(-12)), (tN + 1.8, 1.0),
-            (tE, 1.0), (T - 3.0, 1.25), (T - 0.3, 1.25), (T + 0.5, 0.0), (N / SR, 0.0)])
+            (tE, 1.0), (S0('Z01_endcard'), 1.25), (T - 0.2, 1.25), (T + 0.5, 0.0), (N / SR, 0.0)])
 m *= (duck * auto)[:, None] * db(-16)
 out += m
 
@@ -108,7 +106,7 @@ if os.path.exists(f('whistle')):
     print('whistle onset in file', round(o, 2), 'placed at', round(tTr + 0.08, 2))
     place(f('whistle'), tTr + 0.08 - o, db(-14), 0.05, 1.5, dur=o + (S1('C04_rails') - tTr) + 1.0)
 bed(f('steps'), S0('E01_march') + 0.2, S1('E02_column'), db(-19), 1.0, 1.5)        # the march
-bed(f('breeze'), S0('H01_flowers'), T + 0.5, db(-22), 1.5, 2.0)                     # the empty window
+bed(f('breeze'), S0('H01_flowers'), S0('Z01_endcard') + 1.5, db(-22), 1.5, 2.5)        # the empty window
 
 np.clip(out, -1, 1).astype(np.float32).tofile(f'{ROOT}/audio/mix_raw.f32')
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-f', 'f32le', '-ar', str(SR), '-ac', '2', '-i', f'{ROOT}/audio/mix_raw.f32',
