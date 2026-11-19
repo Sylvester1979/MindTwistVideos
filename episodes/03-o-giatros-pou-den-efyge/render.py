@@ -234,7 +234,7 @@ def subtitles(img, t):
             continue   # the quote card already shows these words
         if s['t0'] - 0.05 <= t <= s['t1'] + 0.1:
             a = clamp01((t - s['t0'] + 0.05) / 0.1) * clamp01((s['t1'] + 0.1 - t) / 0.1)
-            img = band(img, SUBY - 40, SUBY + 40, 0.28 * a, 60)
+            img = band(img, SUBY - 48, SUBY + 48, 0.45 * a, 70)
             img = paste_alpha(img, sub_alpha(s['text']), W / 2, SUBY, (236, 242, 246), a, shadow=1.0, rough=False)
     return img
 
