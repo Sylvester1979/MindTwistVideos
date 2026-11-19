@@ -8,7 +8,6 @@ ROOT = os.environ.get('MT_ROOT', '/home/user/ep03')
 # (l, t, r, b) fractions: signatures, dates, pseudo-text
 MARKS = {
     'B01_portrait': [[0.90, 0.950, 1.00, 0.995], [0.55, 0.085, 0.78, 0.135]],
-    'B03_wall': [[0.02, 0.950, 0.12, 0.990]],
     'B05_stefa': [[0.82, 0.945, 0.95, 0.985]],
     'C02_sickboy': [[0.87, 0.945, 0.97, 0.995]],
     'D01_gate': [[0.88, 0.935, 1.00, 0.975]],
