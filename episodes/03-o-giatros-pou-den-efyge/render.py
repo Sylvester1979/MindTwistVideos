@@ -22,32 +22,32 @@ CREAMC = np.array([222, 236, 244], np.float32)
 D = dict(par=(6, 0, 60), motes=0.0, flick=0.0)
 MOVES = {
     'A01_street':  dict(c=((0.50, 0.44, 1.16), (0.50, 0.56, 1.16)), par=(0, 8, 30)),
-    'A02_window':  dict(c=((0.50, 0.50, 1.04), (0.50, 0.46, 1.32)), motes=0.4),
-    'A03_guard':   dict(c=((0.50, 0.50, 1.05), (0.60, 0.62, 1.32))),
+    'A02_window':  dict(c=((0.50, 0.50, 1.04), (0.50, 0.43, 1.30)), motes=0.4),
+    'A03_guard':   dict(c=((0.50, 0.50, 1.05), (0.50, 0.66, 1.30))),
     'A04_diary':   dict(c=((0.50, 0.50, 1.05), (0.54, 0.66, 1.45)), flick=1.0, motes=0.5),
-    'B01_portrait':dict(c=((0.50, 0.52, 1.05), (0.50, 0.40, 1.28)), motes=0.4),
+    'B01_portrait':dict(c=((0.50, 0.52, 1.05), (0.45, 0.38, 1.28)), motes=0.4),
     'B02_orphans': dict(c=((0.42, 0.52, 1.22), (0.58, 0.48, 1.22)), par=(14, 0, 30), motes=0.4),
-    'B03_wall':    dict(c=((0.50, 0.45, 1.05), (0.50, 0.68, 1.30))),
-    'B04_refuses': dict(c=((0.50, 0.52, 1.05), (0.46, 0.46, 1.28))),
-    'B05_stefa':   dict(c=((0.50, 0.55, 1.05), (0.50, 0.38, 1.30)), motes=0.4),
+    'B03_wall':    dict(c=((0.50, 0.45, 1.05), (0.45, 0.70, 1.30))),
+    'B04_refuses': dict(c=((0.50, 0.52, 1.05), (0.50, 0.55, 1.25))),
+    'B05_stefa':   dict(c=((0.50, 0.55, 1.05), (0.50, 0.35, 1.30)), motes=0.4),
     'C01_play':    dict(c=((0.50, 0.55, 1.05), (0.50, 0.42, 1.35)), motes=0.5),
-    'C02_sickboy': dict(c=((0.50, 0.52, 1.05), (0.42, 0.45, 1.30)), motes=0.4),
-    'C03_watches': dict(c=((0.50, 0.50, 1.05), (0.40, 0.36, 1.32)), motes=0.4),
+    'C02_sickboy': dict(c=((0.50, 0.52, 1.05), (0.38, 0.55, 1.30)), motes=0.4),
+    'C03_watches': dict(c=((0.50, 0.50, 1.05), (0.55, 0.35, 1.30)), motes=0.4),
     'C04_rails':   dict(c=((0.50, 0.58, 1.05), (0.50, 0.52, 1.38)), par=(0, 0, 130)),
     'D01_gate':    dict(c=((0.50, 0.58, 1.05), (0.50, 0.52, 1.28))),
     'D02_dress':   dict(c=((0.44, 0.50, 1.20), (0.56, 0.50, 1.20)), par=(12, 0, 30), motes=0.4),
     'D03_bundle':  dict(c=((0.50, 0.45, 1.05), (0.50, 0.58, 1.28))),
-    'E01_march':   dict(c=((0.42, 0.62, 1.38), (0.50, 0.55, 1.06)), par=(0, 0, -60)),
+    'E01_march':   dict(c=((0.48, 0.55, 1.35), (0.50, 0.50, 1.05)), par=(0, 0, -60)),
     'E02_column':  dict(c=((0.50, 0.60, 1.20), (0.50, 0.42, 1.20)), par=(0, 10, 30)),
-    'F01_platform':dict(c=((0.50, 0.50, 1.05), (0.62, 0.40, 1.55))),
+    'F01_platform':dict(c=((0.50, 0.50, 1.05), (0.60, 0.33, 1.50))),
     'F02_wagon':   dict(c=((0.50, 0.50, 1.05), (0.46, 0.52, 1.28))),
     'F03_empty':   dict(c=((0.50, 0.55, 1.04), (0.50, 0.52, 1.16)), motes=0.5),
     'G02_hidden':  dict(c=((0.50, 0.50, 1.05), (0.50, 0.50, 1.32))),
-    'G03_page':    dict(c=((0.50, 0.50, 1.05), (0.58, 0.36, 1.40)), motes=0.4),
+    'G03_page':    dict(c=((0.50, 0.50, 1.05), (0.60, 0.42, 1.35)), motes=0.4),
     'H01_flowers': dict(c=((0.50, 0.62, 1.40), (0.50, 0.50, 1.04)), par=(0, 0, -50), motes=0.4),
 }
 # hybrid AI regions: plate-fraction box (l, t, r, b); clip in $ROOT/ai/<k>.mp4
-AI = {'A02_window': (0.18, 0.30, 0.82, 0.72), 'H01_flowers': (0.15, 0.12, 0.85, 0.80)}
+AI = {}   # optional hybrid AI regions, e.g. 'A02_window': (l, t, r, b); clip in $ROOT/ai/<k>.mp4
 # text cards: shot -> (lines, kind, size, y, t_in, t_out) times relative to shot start/end
 CARDS = {
     'A01_street': (['4 Αυγούστου 1942', 'Βαρσοβία'], 'serif', 70, 0.17, 0.4, -0.5),
@@ -138,7 +138,10 @@ def card(img, k, s, t):
     t_out = s['t1'] + to if to < 0 else s['t0'] + to
     a = clamp01((t - s['t0'] - ti) / 0.6) * clamp01((t_out - t) / 0.6)
     if a <= 0: return img
-    return paper_text(img, text_layer(lines, kind, size, 560, 1.25), int(H * y), a, pad=(50, 26))
+    al = text_layer(lines, kind, size, 560, 1.25)
+    cy = int(H * y)
+    img = band(img, cy - al.shape[0] // 2 - 6, cy + al.shape[0] // 2 + 6, 0.45 * a, 90)
+    return paste_alpha(img, al, W / 2, cy, (236, 242, 246), a, shadow=1.0, rough=True)
 
 
 def paper_text(img, al, cy, a, pad=(40, 40), op=0.9):
@@ -184,7 +187,7 @@ def count_field(n=4000, seed=3):
 @functools.lru_cache(None)
 def count_bg():
     n = _ink_noise(9)
-    return CREAMC * (0.86 + 0.14 * n)[..., None]
+    return INK * 1.6 * (0.8 + 0.4 * n)[..., None] * vignette()
 
 
 def count_frame(s, t, fi):
@@ -198,17 +201,17 @@ def count_frame(s, t, fi):
         cv2.circle(lay, (int(x), int(y - 5 * q)), max(1, int(round(r))), 1.0, -1, cv2.LINE_AA)
         cv2.ellipse(lay, (int(x), int(y + 4 * q)), (max(1, int(4 * q)), max(1, int(6 * q))), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
     lay = cv2.GaussianBlur(lay, (0, 0), 0.7) * 0.8
-    out = out * (1 - lay[..., None]) + INKC * lay[..., None]
+    out = out * (1 - lay[..., None]) + PAPER * 0.9 * lay[..., None]
     num = int(round(4000 * ease2(p)))
     s_ = f'{num:,}'.replace(',', '.')
     al = text_layer(['≈ ' + s_], 'serif', 210, 600)
     y0, y1 = int(H * 0.22) - 150, int(H * 0.22) + 200
     out[y0:y1] = out[y0:y1] * 0.15 + count_bg()[y0:y1] * 0.85
-    out = paste_alpha(out, al, W / 2, H * 0.22, INKC, 1.0, rough=True)
+    out = paste_alpha(out, al, W / 2, H * 0.22, RED * 1.15, 1.0, shadow=0.8, rough=True)
     a2 = clamp01((p - 0.35) / 0.3)
     if a2 > 0:
         al2 = text_layer(['παιδιά από τα ορφανοτροφεία', 'της Βαρσοβίας'], 'serif', 56, 500, 1.2)
-        out = paste_alpha(out, al2, W / 2, H * 0.22 + 135, INKC, a2, rough=True)
+        out = paste_alpha(out, al2, W / 2, H * 0.22 + 135, PAPER, a2, shadow=0.8, rough=True)
     return out
 
 
@@ -249,7 +252,7 @@ def frame(t, fi):
         img = crossfade(shot_frame(a, t, fi), shot_frame(b, t, fi), u)
     # fade in / out
     img = img * clamp01(t / 0.6) * clamp01((T - t) / 1.2)
-    img = FILM.apply(img, fi, t, strength=0.45, weave=False, flicker=0.35, grain=0.8)
+    img = FILM.apply(img, fi, t, strength=0.9)          # episode-2 film look
     if os.environ.get('NOSUBS') is None:
         img = subtitles(img, t)
     return np.clip(img, 0, 255).astype(np.uint8)
