@@ -1,0 +1,154 @@
+{
+ "style": "Black-and-white ink and charcoal illustration in a cinematic graphic-novel style: confident ink linework, cross-hatching and soft charcoal shading on warm off-white paper, balanced tones with plenty of paper white, gentle natural light, period-accurate Warsaw 1942. Monochrome. Absolutely no text, no letters, no signs, no writing, no signature. Vertical 9:16 composition.",
+ "korczak": "an elderly bald man of sixty-four with a short pointed white goatee beard and round wire-rimmed glasses, thin face, wearing a worn grey wool suit",
+ "stefa": "a woman in her late fifties with short dark grey hair, round kind face, plain dark dress with a white collar",
+ "shots": [
+  {
+   "k": "A01_street",
+   "cue": "Τέσσερις Αυγούστου… Βαρσοβία.",
+   "move": "slow tilt down",
+   "prompt": "Early morning on a narrow Warsaw ghetto street: tall plastered four-storey tenement houses with tall windows and small balconies, cobblestones, a few distant pedestrians, a glimpse of a high brick wall at the end of the street. Soft low summer sun."
+  },
+  {
+   "k": "A02_window",
+   "cue": "Ένας γέρος γιατρός ποτίζει…",
+   "move": "push-in + AI water",
+   "ai": true,
+   "prompt": "Front view of a tall tenement window on an upper floor. In the open window {korczak} leans out slightly and waters a wooden window box of geraniums with a single small tin watering can held over the flowers; a thin stream of water falls on them. Pale curtains inside. Plastered wall around the window. Only one watering can. The red geraniums are the only colour in the whole image, in deep red watercolour; everything else is black-and-white ink."
+  },
+  {
+   "k": "A03_guard",
+   "cue": "Απέναντι, ένας φρουρός…",
+   "move": "slow push, low angle",
+   "prompt": "Seen from a high upper-floor window looking down steeply across a narrow street: on the opposite pavement a lone German sentry in uniform and steel helmet, rifle on his shoulder, stands still with his face turned upward, looking calmly up toward the viewer. Cobblestones, plastered house fronts, morning light."
+  },
+  {
+   "k": "A04_diary",
+   "cue": "Εκείνο το βράδυ γράφει…",
+   "move": "slow push to page, lamp flicker",
+   "prompt": "A small wooden desk by a window in a modest room at dusk, a brass oil lamp casting warm light, an open notebook with blank pages and a fountain pen, a pair of round wire glasses resting beside it, a small pot of geraniums on the windowsill. The red geraniums are the only colour in the whole image, in deep red watercolour; everything else is black-and-white ink."
+  },
+  {
+   "k": "B01_portrait",
+   "cue": "Τον λένε Γιάνους Κόρτσακ…",
+   "move": "slow push",
+   "prompt": "Gentle half-length portrait of {korczak} sitting in a study surrounded by stacks of children's books, a doctor's stethoscope around his neck, a faint kind smile, a child's drawing pinned on the wall behind him."
+  },
+  {
+   "k": "B02_orphans",
+   "cue": "Ορφανοτροφείο… σχεδόν διακόσια παιδιά.",
+   "move": "slow lateral pan",
+   "prompt": "A large bright orphanage dining hall with long wooden tables full of many children aged five to fourteen in simple 1940s clothes eating soup together, tall windows with daylight, {korczak} standing at the far end among them. Warm, orderly, homely."
+  },
+  {
+   "k": "B03_wall",
+   "cue": "Φίλοι… από την άλλη πλευρά του τείχους…",
+   "move": "slow push toward wall",
+   "prompt": "Seen from inside the ghetto: a tall brick wall blocks the end of a quiet street, its top lined with shards of glass. Through a small gap between loose bricks low in the wall, a hand from the other side reaches in holding out a folded paper. Light falls over the top of the wall."
+  },
+  {
+   "k": "B04_refuses",
+   "cue": "Εκείνος αρνείται. Δεν αφήνει τα παιδιά.",
+   "move": "slow push",
+   "prompt": "{korczak} sits on a low bench in a courtyard with several small children leaning against him and on his lap, one child holding his hand, he looks down at them tenderly. Soft afternoon light."
+  },
+  {
+   "k": "B05_stefa",
+   "cue": "Το ίδιο και η Στέφα…",
+   "move": "slow push",
+   "prompt": "Half-length portrait of {stefa} standing in an orphanage hallway, gently resting her hands on the shoulders of two small children in front of her, row of coat hooks behind. Calm, warm light."
+  },
+  {
+   "k": "C01_play",
+   "cue": "Βάζει τα παιδιά να ανεβάσουν ένα θεατρικό.",
+   "move": "slow push to stage",
+   "prompt": "A small improvised theatre in an orphanage hall: a stage made of planks with simple painted scenery and blue-grey curtains, a few children performing, rows of seated children watching from behind, an audience of adults at the back. Warm stage lamp light."
+  },
+  {
+   "k": "C02_sickboy",
+   "cue": "Ένα άρρωστο αγόρι… περιμένει ένα γράμμα…",
+   "move": "slow push to window",
+   "prompt": "A children's theatre stage set: a sick boy of about ten lies in a simple bed beside a small painted window, looking out longingly; on a stool beside him a large folded letter with a wax seal."
+  },
+  {
+   "k": "C03_watches",
+   "cue": "Ο Κόρτσακ ήθελε να τα προετοιμάσει.",
+   "move": "slow push",
+   "prompt": "From the side of a small stage, {korczak} stands in the wings in half light, watching the children perform with a quiet thoughtful expression, stage lamp glow on his face."
+  },
+  {
+   "k": "C04_rails",
+   "cue": "Τέσσερις μέρες μετά… τρένα για την Τρεμπλίνκα.",
+   "move": "slow lateral pan",
+   "prompt": "A single railway track leading away across a completely flat plain at dawn; a long train of closed wooden boxcars with sliding doors stands on the track, telegraph poles along the line, low pale sky, distant pine forest. Empty and quiet, no people."
+  },
+  {
+   "k": "D01_gate",
+   "cue": "Ένα πρωί του Αυγούστου, έρχονται για τα παιδιά.",
+   "move": "slow push",
+   "prompt": "View from inside an orphanage courtyard towards the open entrance gate: the long shadows of several soldiers fall across the courtyard cobblestones from the gate, while a few children at a window above look down. Morning light. No faces of soldiers visible."
+  },
+  {
+   "k": "D02_dress",
+   "cue": "Να φορέσουν τα καλά τους ρούχα…",
+   "move": "slow push",
+   "prompt": "In an orphanage dormitory with rows of simple iron beds, children help each other put on their best clothes: buttoning coats, a girl tying a younger girl's hair ribbon, polished shoes. Soft morning light, gentle and orderly."
+  },
+  {
+   "k": "D03_bundle",
+   "cue": "Το καθένα κρατάει ένα μικρό μπογαλάκι.",
+   "move": "slow push",
+   "prompt": "Close view of a little girl of three in a neat coat and cap holding a small cloth bundle tied with string against her chest, standing in line with other small children. Soft light, tender."
+  },
+  {
+   "k": "E01_march",
+   "cue": "Περπατούν σε σειρές… Μπροστά, ο Κόρτσακ…",
+   "move": "slow tilt / pan, no walking animation",
+   "prompt": "Medium shot on a narrow Warsaw ghetto street of plastered tenements: {korczak} walks toward the viewer holding the hand of a small girl of four in a light coat; right behind them two neat rows of small children aged four to ten in their best clothes and caps, children only, no adult men behind him. Cobblestones, soft morning light."
+  },
+  {
+   "k": "E02_column",
+   "cue": "«Δεν ήταν πορεία… σιωπηλή διαμαρτυρία».",
+   "move": "slow high-angle pan",
+   "prompt": "High angle view from an upper window down onto a narrow ghetto street: a neat column made only of small children walking four abreast in their best clothes, about a hundred small children; on the pavements a few adults stand silently in doorways watching. Morning light, quiet dignity."
+  },
+  {
+   "k": "F01_platform",
+   "cue": "Στην αποβάθρα, κάποιος προσπαθεί…",
+   "move": "slow push",
+   "prompt": "A loading square beside a railway siding with closed wooden boxcars. In the foreground two men face each other: on the left a clean-shaven dark-haired younger man of forty with a white armband on his sleeve, gesturing urgently; on the right {korczak}, listening calmly, with a small group of children standing close behind him. Only one old man in the image. Hazy light."
+  },
+  {
+   "k": "F02_wagon",
+   "cue": "Ανέβηκε στο τρένο μαζί τους.",
+   "move": "slow push",
+   "prompt": "The open sliding door of a wooden freight wagon; seen from behind, {korczak} helps a small child step up into the wagon, other children already inside in the shadow. Hazy light. Restrained, not violent."
+  },
+  {
+   "k": "F03_empty",
+   "cue": "Κανείς τους δεν γύρισε.",
+   "move": "very slow push",
+   "prompt": "An empty orphanage dormitory: rows of neatly made small iron beds, sunlight falling through tall windows onto the floor, one small cap left on a pillow. Silence and stillness."
+  },
+  {
+   "k": "G02_hidden",
+   "cue": "Το ημερολόγιο του Κόρτσακ σώθηκε.",
+   "move": "slow push",
+   "prompt": "Close view of an old brick wall with a few bricks removed, revealing a hidden cavity in which lies a bundle of old plain notebooks with blank unmarked covers, tied with string."
+  },
+  {
+   "k": "G03_page",
+   "cue": "Η τελευταία του σελίδα τελειώνει με τα λουλούδια.",
+   "move": "slow push",
+   "prompt": "Close view of an open old notebook on a wooden table, the pages blank, a single pressed geranium flower lying on the page, soft window light. The red geranium flower is the only colour in the whole image, in deep red watercolour; everything else is black-and-white ink."
+  },
+  {
+   "k": "H01_flowers",
+   "cue": "Τα λουλούδια τα πότισε. Τα παιδιά δεν τα άφησε.",
+   "move": "slow pull-back + AI leaves",
+   "ai": true,
+   "prompt": "The same tall tenement window from the front, now empty and open, pale curtains, the wooden window box of red and orange geraniums blooming in the morning sun, a small tin watering can resting on the sill. Plastered wall. Peaceful."
+  }
+ ],
+ "style_v1_papercraft_rejected": "Handcrafted paper-cut collage diorama photographed in soft natural daylight: layered cardboard and textured paper cutouts with visible paper fibres, torn and cut edges and subtle shadows between layers. Muted 1940s palette of ochre, faded brick red, grey-green, dusty blue and cream. Period-accurate Warsaw, 1942. Quiet, gentle, tender mood, bright and calm, not dark. Absolutely no text, no letters, no signs, no writing anywhere, no signatures. Vertical 9:16 composition."
+}
