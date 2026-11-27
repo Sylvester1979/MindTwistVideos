@@ -27,7 +27,10 @@ if '--clip' in argv: CLIP = argv[argv.index('--clip') + 1].upper()
 def _arg(name, cast, default=None):                       # δοκιμές: --pct 25 --samples 16 --frames 1,90 --outdir d
     return cast(argv[argv.index(name) + 1]) if name in argv else default
 STYLE = _arg('--style', str, STYLE); INK_GAIN = _arg('--inkgain', float, {'B': 3.0, 'C': 4.5, 'D': 5.0}[CLIP])
-LENGTH = {'B': 210, 'C': 360, 'D': 240}[CLIP]
+LENGTH = {'B': 210, 'C': 418, 'D': 240}[CLIP]
+# C was 360 frames (12″) and was slowed down in the edit; the user (26/11) chose normal speed: the same motion over
+# 418 frames (13.93″, the length of its shot), every key of C at CF(its old frame)
+def CF(f): return 1 + (f - 1) * (LENGTH - 1) / 359 if CLIP == 'C' else f
 NAME = {'B': 'ep05_3dB_burn', 'C': 'ep05_3dC_paper', 'D': 'ep05_3dD_finale'}[CLIP]
 
 # ---------------------------------------------------------------- βοηθητικά (ίδια με το πρότυπο 1a1p-01)
@@ -713,17 +716,17 @@ if CLIP == 'C':
 
     PF = (0.0, 0.05, 0.0006); ROT = 180 - 4                   # final place; text upright for the officer/camera
     paper = names_paper((0.02, -0.40, 0.0006), 180 + 9)
-    key(paper, 'location', 1, (0.02, -0.40, 0.0006)); key(paper, 'rotation_euler', 1, (0, 0, math.radians(180 + 9)))
-    key(paper, 'location', 60, (0.02, -0.40, 0.0006)); key(paper, 'rotation_euler', 60, (0, 0, math.radians(180 + 9)))
-    key(paper, 'location', 138, PF); key(paper, 'rotation_euler', 138, (0, 0, math.radians(ROT)))
-    # camera: wide over the desk, then a slow push to the names (the hook reuses the last 6″)
+    key(paper, 'location', CF(1), (0.02, -0.40, 0.0006)); key(paper, 'rotation_euler', CF(1), (0, 0, math.radians(180 + 9)))
+    key(paper, 'location', CF(60), (0.02, -0.40, 0.0006)); key(paper, 'rotation_euler', CF(60), (0, 0, math.radians(180 + 9)))
+    key(paper, 'location', CF(138), PF); key(paper, 'rotation_euler', CF(138), (0, 0, math.radians(ROT)))
+    # camera: wide over the desk, then a slow push to the names (the hook reuses the last 7.9″)
     for f, c, a in ((1, (0.02, 0.62, 0.40), (0.0, -0.06, 0)), (140, (0.0, 0.58, 0.37), (0.0, -0.02, 0)),
                     (170, (0.0, 0.56, 0.35), (0.0, 0.0, 0)), (290, (0.0, 0.25, 0.17), PF), (360, (0.0, 0.235, 0.16), PF)):
-        key(cam, 'location', f, c); key(AIM, 'location', f, a)
+        key(cam, 'location', CF(f), c); key(AIM, 'location', CF(f), a)
     L1 = paper_local(PF, ROT, 0.0, 0.045); L2 = paper_local(PF, ROT, 0.0, 0.031)
     for f, fo in ((1, (-0.20, 0.10, 0.06)), (55, (-0.20, 0.10, 0.06)), (100, (0.02, -0.2, 0.0)),
                   (140, PF), (240, L1), (285, L1), (315, L2), (360, L2)):
-        key(FOCUS, 'location', f, fo)
+        key(FOCUS, 'location', CF(f), fo)
 
 # ================================================================= CLIP B / D · Η ΛΙΣΤΑ, Η ΣΤΑΧΤΗ
 else:
@@ -854,7 +857,8 @@ if '--stills' in argv:
     picks = {'B': (1, 60, 120, 200), 'C': (1, 80, 150, 240, 300, 355), 'D': (1, 90, 170, 235)}[CLIP]
     if '--frames' in argv: picks = [int(x) for x in argv[argv.index('--frames') + 1].split(',')]
     for f in picks:
-        scene.frame_set(f); r.filepath = os.path.join(OUTDIR, 'stills_%s_%03d.png' % (CLIP, f))
+        # SUBF: llvmpipe (sandbox) hangs on a few frames (B 176); 0.02 of a frame later renders and looks the same
+        scene.frame_set(f, subframe=float(os.environ.get('SUBF', '0'))); r.filepath = os.path.join(OUTDIR, 'stills_%s_%03d.png' % (CLIP, f))
         bpy.ops.render.render(write_still=True)
     out_video()
 if '--render' in argv:
